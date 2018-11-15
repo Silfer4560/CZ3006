@@ -1,0 +1,183 @@
+<html xmlns = "http://www.w3.org/1999/xhtml">
+	<style>
+	table.minimalistBlack {
+  font-family: "Times New Roman", Times, serif;
+  border: 3px solid #000000;
+  width: 15%;
+  text-align: center;
+  border-collapse: collapse;
+}
+table.minimalistBlack td, table.minimalistBlack th {
+  border: 1px solid #000000;
+  padding: 5px 5px;
+}
+table.minimalistBlack tbody td {
+  font-size: 13px;
+}
+table.minimalistBlack thead {
+  background: #CFCFCF;
+  background: -moz-linear-gradient(top, #dbdbdb 0%, #d3d3d3 66%, #CFCFCF 100%);
+  background: -webkit-linear-gradient(top, #dbdbdb 0%, #d3d3d3 66%, #CFCFCF 100%);
+  background: linear-gradient(to bottom, #dbdbdb 0%, #d3d3d3 66%, #CFCFCF 100%);
+  border-bottom: 3px solid #000000;
+}
+table.minimalistBlack thead th {
+  font-size: 15px;
+  font-weight: bold;
+  color: #000000;
+  text-align: left;
+}
+table.minimalistBlack tfoot {
+  font-size: 14px;
+  font-weight: bold;
+  color: #000000;
+  border-top: 3px solid #000000;
+}
+table.minimalistBlack tfoot td {
+  font-size: 14px;
+}
+	</style>
+	<!--head runs on event occurance-->
+	<head>
+		<script type ="text/javascript">
+			function validateName() {
+				var name = document.getElementById("username");
+				if (name == "") {
+					alert("Please enter your name.");
+					return false;
+				}
+				else {
+					return true;
+				}
+			}
+			function validateApples() {
+				var applesToValidate = document.getElementById("applesID").value;
+				//use regular expression to check for positive integers only
+				var regex =  /^\d+$/;
+				if( !regex.test(applesToValidate)) {
+					alert("Number of apples you are ordering is invalid");
+					//highlight area of error
+					document.getElementById("applesID").focus();
+					document.getElementById("applesID").select();
+					return false;
+				}
+				return true;
+			}
+			function validateBananas() {
+				var bananasToValidate = document.getElementById("bananasID").value;
+				//use regular expression to check for positive integers only
+				var regex =  /^\d+$/;
+				if( !regex.test(bananasToValidate)) {
+					alert("Number of bananas you are ordering is invalid");
+					//highlight area of error
+					document.getElementById("bananasID").focus();
+					document.getElementById("bananasID").select();
+					return false;
+				}
+				return true;
+			}
+			function validateOranges() {
+				var orangesToValidate = document.getElementById("orangesID").value;
+				//use regular expression to check for positive integers only
+				var regex =  /^\d+$/;
+				if( !regex.test(orangesToValidate)) {
+					alert("Number of Oranges you are ordering is invalid");
+					//highlight area of error
+					document.getElementById("orangesID").focus();
+					document.getElementById("orangesID").select();
+					return false;
+				}
+				return true;
+			}
+			function calculateCost(){
+				var apples = document.getElementById("applesID").value;
+				var bananas = document.getElementById("bananasID").value;
+				var oranges = document.getElementById("orangesID").value;
+				//only calculate cost if everything is >0
+				if (apples>= 0 && bananas>=0 && oranges>= 0) {
+					var totalCost= apples * 0.69 + bananas * 0.39 + oranges * 0.59;
+					totalCostForPage= totalCost.toFixed(2);
+					document.getElementById("totalCostID").value = totalCostForPage;
+					return true;
+				}
+				else {
+					document.getElementById("totalCostID").value = "NaN";
+					return false;
+				}
+			}
+			function validatePayment(){
+				//check if any of the 3 payment methods are selected
+				//return true if selected else return false
+				//use checked because of radio buttons
+				 if (document.getElementById("visaPayment").checked || document.getElementById("mastercardPayment").checked || document.getElementById("discoverPayment").checked) {
+                return true;
+            }
+            else {
+                alert("Please select a payment method.");
+                return false;
+            }
+			}
+			function checkForm(){
+				//easy method for checking everything
+			 	if(validateCost() && validateName() && validatePayment()){
+					return true;
+				}
+				else{
+					alert("An error has occurred");
+					return false;
+				}
+			}
+		</script>
+	</head>
+	<!--Use body for on page load-->
+	<body>
+		<form accept-charset="UTF-8" METHOD = "POST" ACTION="testpage.php">
+			<legend>Fruit Ordering Form</legend>
+			</br>
+			<!--Name-->
+			<label for="Username">Username</label><br />
+			<input name="username" type="text" value="Enter name here" /> <br />
+			<p>
+			</p>
+			<!--Fruits in order Apple/Banana/Orange-->
+			<!-- use id to reference the module u want to run functions on later-->
+			<!--onchange is used so whenever u add number the value is validated-->
+			<table class="minimalistBlack">
+			<tr>
+				<th>Fruits</th>
+				<th>Price</th>
+				<th>Quantity</th>
+			</tr>
+			<tr>
+			<td>Apples</td>
+			<td>$0.69</td>
+			<td><input name="applesName" type="text" id="applesID" oninput ="calculateCost();validateApples()"></td>
+			</tr>
+			<tr>
+			<td>Bananas</td>
+			<td>$0.39</td>
+			<td><input name="bananasName" type="text"  id="bananasID"oninput ="calculateCost();validateBananas();"></td>
+			</tr>
+			<tr>
+			<td>Oranges</td>
+			<td>$0.59</td>
+			<td><input name="orangesName" type="text" id="orangesID"oninput ="calculateCost();validateOranges();"></td>
+			</tr>
+			</table>
+			</br>
+			<!--Payment methods-->
+			<label for="paymentMethod">Method of Payment:</label><br />
+			<div>
+			<input name="Payment" id = "visaPayment" type="radio" value="Visa"> Visa</label>
+			<input name="Payment" id = "mastercardPayment" type="radio" value="Mastercard"> Mastercard</label>
+			<input name="Payment" id = "discoverPayment" type="radio" value="Discover"> Discover</label>
+			</div>
+			<p>
+			</p>
+			<!--TotalPrice-->
+			<label for="TotalPrice">Total Price ($)</label><br />
+			<input type="text" name="totalCostName" id="totalCostID" onfocus="this.blur();">
+			<!--TotalPrice-->
+			<button type="submit" value="Submit" onclick = "checkForm()">Submit</button>
+		</form>
+	</body>
